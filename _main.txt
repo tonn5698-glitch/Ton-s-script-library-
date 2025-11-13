@@ -65,6 +65,21 @@ Tabs.Main:AddButton({
     end
 })
 
+--// Nút chạy script Fly
+Tabs.Main:AddButton({
+    Title = "script dead raid",
+    Description = "keyless",
+    Callback = function()
+        Fluent:Notify({
+            Title = "script loading",
+            Content = "Đang tải script...(dead raid)",
+            Duration = 4
+        })
+
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Unknownlodfc/Zephyr/refs/heads/main/DeadRails/Main"))()
+    end
+})
+
 --// Cấu hình SaveManager & InterfaceManager
 SaveManager:SetLibrary(Fluent)
 InterfaceManager:SetLibrary(Fluent)
