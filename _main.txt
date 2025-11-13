@@ -6,7 +6,7 @@ local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.
 --// Tạo cửa sổ GUI
 local Window = Fluent:CreateWindow({
     Title = "Ton's Script Hub",
-    SubTitle = "Multi Script Loader",
+    SubTitle = "Multi Script Loader (all games)",
     TabWidth = 160,
     Size = UDim2.fromOffset(580, 460),
     Acrylic = true,
@@ -37,31 +37,31 @@ Tabs.Main:AddButton({
 
 --// Nút chạy script ESP
 Tabs.Main:AddButton({
-    Title = "Run ESP Script",
-    Description = "Hiển thị người chơi qua tường",
+    Title = "script grass (all game)",
+    Description = "protect you from zomble",
     Callback = function()
         Fluent:Notify({
-            Title = "ESP Script",
-            Content = "Đang chạy ESP...",
+            Title = "script grass",
+            Content = "loading",
             Duration = 4
         })
 
-        loadstring(game:HttpGet("https://pastebin.com/raw/YOUR_ESP_SCRIPT"))()
+        loadstring(game:HttpGet("https://pastefy.app/bfoj4BKE/raw" , true))()
     end
 })
 
 --// Nút chạy script Auto Farm
 Tabs.Main:AddButton({
-    Title = "Run Auto Farm",
-    Description = "Tự động farm",
+    Title = "script kill npc dead raid s",
+    Description = "lấy cảm hứng từ tsb",
     Callback = function()
         Fluent:Notify({
-            Title = "Auto Farm",
+            Title = "Kill npc loading",
             Content = "Script đang hoạt động!",
             Duration = 4
         })
 
-        loadstring(game:HttpGet("https://pastebin.com/raw/YOUR_FARM_SCRIPT"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/catwljz/DeadRails/refs/heads/main/SeriousPunch.txt"))()
     end
 })
 
