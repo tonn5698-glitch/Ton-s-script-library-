@@ -1,0 +1,148 @@
+--// Load Fluent UI Library
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"))()
+
+--// Tạo cửa sổ GUI
+local Window = Fluent:CreateWindow({
+    Title = "Ton's Script Hub",
+    SubTitle = "Multi Script Loader",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+--// Tạo tab
+local Tabs = {
+    Main = Window:AddTab({ Title = "Main", Icon = "terminal" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+--// Nút chạy script Fly
+Tabs.Main:AddButton({
+    Title = "box gui script (all game)",
+    Description = "need 1.1.1.1 to run (pastebin raw)",
+    Callback = function()
+        Fluent:Notify({
+            Title = "box gui script (all games)",
+            Content = "Đang tải script...",
+            Duration = 4
+        })
+
+        loadstring(game:HttpGet("https://pastebin.com/raw/Rm8X3Btf", true))()  -- ← thay link script của bạn
+    end
+})
+
+--// Nút chạy script ESP
+Tabs.Main:AddButton({
+    Title = "Run ESP Script",
+    Description = "Hiển thị người chơi qua tường",
+    Callback = function()
+        Fluent:Notify({
+            Title = "ESP Script",
+            Content = "Đang chạy ESP...",
+            Duration = 4
+        })
+
+        loadstring(game:HttpGet("https://pastebin.com/raw/YOUR_ESP_SCRIPT"))()
+    end
+})
+
+--// Nút chạy script Auto Farm
+Tabs.Main:AddButton({
+    Title = "Run Auto Farm",
+    Description = "Tự động farm",
+    Callback = function()
+        Fluent:Notify({
+            Title = "Auto Farm",
+            Content = "Script đang hoạt động!",
+            Duration = 4
+        })
+
+        loadstring(game:HttpGet("https://pastebin.com/raw/YOUR_FARM_SCRIPT"))()
+    end
+})
+
+--// Cấu hình SaveManager & InterfaceManager
+SaveManager:SetLibrary(Fluent)
+InterfaceManager:SetLibrary(Fluent)
+SaveManager:IgnoreThemeSettings()
+InterfaceManager:SetFolder("TonHub")
+SaveManager:SetFolder("TonHub/config")
+
+InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+SaveManager:BuildConfigSection(Tabs.Settings)
+
+Window:SelectTab(1)
+
+Fluent:Notify({
+    Title = "Ton's Script Hub",
+    Content = "Đã tải thành công!",
+    Duration = 6
+})
+--// 🔘 Nút icon để mở / ẩn GUI
+local uiVisible = true
+
+-- Tạo ScreenGui để chứa nút icon
+local toggleGui = Instance.new("ScreenGui")
+toggleGui.Name = "ToggleButtonGUI"
+toggleGui.ResetOnSpawn = false
+toggleGui.Parent = game:GetService("CoreGui")
+
+-- Tạo nút dạng ImageButton
+local toggleButton = Instance.new("ImageButton")
+toggleButton.Name = "FluentToggleButton"
+toggleButton.Parent = toggleGui
+toggleButton.AnchorPoint = Vector2.new(1, 1)
+toggleButton.Position = UDim2.new(1, -20, 1, -20) -- mặc định ở góc phải dưới
+toggleButton.Size = UDim2.new(0, 50, 0, 50)
+toggleButton.BackgroundTransparency = 1
+toggleButton.Image = getcustomasset("Fluent/icon.png")
+
+-- Khi click nút → ẩn/hiện GUI Fluent
+toggleButton.MouseButton1Click:Connect(function()
+    uiVisible = not uiVisible
+    for _, gui in pairs(game:GetService("CoreGui"):GetChildren()) do
+        if gui.Name:find("Fluent") then
+            gui.Enabled = uiVisible
+        end
+    end
+end)
+
+--// 🖱️ Thêm tính năng KÉO (DRAG)
+local UIS = game:GetService("UserInputService")
+local dragging = false
+local dragStart, startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    toggleButton.Position = UDim2.new(
+        startPos.X.Scale,
+        startPos.X.Offset + delta.X,
+        startPos.Y.Scale,
+        startPos.Y.Offset + delta.Y
+    )
+end
+
+toggleButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        dragging = true
+        dragStart = input.Position
+        startPos = toggleButton.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+toggleButton.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement then
+        if dragging then
+            update(input)
+        end
+    end
+end)
