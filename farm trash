@@ -1,0 +1,51 @@
+--MAKE BY TON
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local rep = game:GetService("ReplicatedStorage")
+
+local radioactiveLoot = rep:WaitForChild("RadioactiveLoot")
+local sellAll = rep:WaitForChild("SellAllItems")
+
+local spamWrench = false
+
+print("Command: /wrench  (RADIOACTIVE x20)")
+
+local function equipTool(toolName)
+	local char = player.Character
+	if not char then return end
+
+	local hum = char:FindFirstChildOfClass("Humanoid")
+	if not hum then return end
+
+	local backpack = player:WaitForChild("Backpack")
+
+	for _, tool in ipairs(backpack:GetChildren()) do
+		if tool:IsA("Tool") and tool.Name == toolName then
+			hum:EquipTool(tool)
+			break
+		end
+	end
+end
+
+player.Chatted:Connect(function(msg)
+	msg = msg:lower()
+
+	if msg == "/wrench" then
+		spamWrench = not spamWrench
+		print("Wrench radioactive x20:", spamWrench)
+	end
+end)
+
+while true do
+	task.wait(0.01) 
+
+	if spamWrench then
+		equipTool("Invisible Wrench")
+
+		for i = 1, 10 do
+			radioactiveLoot:FireServer("RadioactiveJunk")
+		end
+
+		sellAll:FireServer()
+	end
+end
